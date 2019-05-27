@@ -40,6 +40,13 @@ public class Main {
         locations.get(5).adddExit("S", 1);
         locations.get(5).adddExit("W", 2);
 
+        Map<String, String> vocabulary = new HashMap<String, String>();
+        vocabulary.put("QUIT", "Q");
+        vocabulary.put("NORTH", "N");
+        vocabulary.put("SOUTH", "S");
+        vocabulary.put("WEST", "W");
+        vocabulary.put("EAST", "E");
+
         int loc = 1;
         while (true) {
             System.out.println(locations.get(loc).getDescription()); // print current location
@@ -54,38 +61,50 @@ public class Main {
             }
             System.out.println();
 
-            // get user input
-            String input = scanner.nextLine();
-            String direction = ""; // initialize empty string to store direction
+//            // get user input
+//            String input = scanner.nextLine();
+//            String direction = ""; // initialize empty string to store direction
 
-            // if input is greater than a single character split string
-            if (input.length() > 1) {
-                String[] stringArray = input.split(" ");
-                for (String i: stringArray) { // iterate through array elements, and determine direction
-                    switch (i.toLowerCase()) {
-                        case "north" :
-                            direction = "N";
-                            break;
-                        case "west" :
-                            direction = "W";
-                            break;
-                        case "south" :
-                            direction = "S";
-                            break;
-                        case "east" :
-                            direction = "E";
-                            break;
-                        case "quit" :
-                            direction = "Q";
-                            break;
+//            // if input is greater than a single character split string
+//            if (input.length() > 1) {
+//                String[] stringArray = input.split(" ");
+//                for (String i: stringArray) { // iterate through array elements, and determine direction
+//                    switch (i.toLowerCase()) {
+//                        case "north" :
+//                            direction = "N";
+//                            break;
+//                        case "west" :
+//                            direction = "W";
+//                            break;
+//                        case "south" :
+//                            direction = "S";
+//                            break;
+//                        case "east" :
+//                            direction = "E";
+//                            break;
+//                        case "quit" :
+//                            direction = "Q";
+//                            break;
+//                    }
+//                }
+//            } else { // if input is a single character convert to uppercase and assign to direction variable
+//                direction = input.toUpperCase();
+//            }
+
+            String direction = scanner.nextLine().toUpperCase(); // get direction input, convert to uppercase
+
+            // process if input is more than a single letter, for example "go north"
+            if (direction.length() > 1) {
+                String[] words = direction.split(" ");
+                for (String word: words) {
+                    if (vocabulary.containsKey(word)) {
+                        direction = vocabulary.get(word);
+                        break;
                     }
                 }
-            } else { // if input is a single character convert to uppercase and assign to direction variable
-                direction = input.toUpperCase();
             }
 
-            //String direction = scanner.nextLine().toUpperCase(); // get direction input, convert to uppercase
-
+            // process single letter input, for example "n"
             if (exits.containsKey(direction)) { // if one of current locations valid exits match input
                 loc = exits.get(direction); // change location
             } else {
